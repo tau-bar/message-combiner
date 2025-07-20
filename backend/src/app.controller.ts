@@ -88,4 +88,14 @@ export class AppController {
         .json({ error: error.response?.data || error.message });
     }
   }
+
+  // Optional: Endpoint to retrieve a stored token by user_id (for testing/demo)
+  @Get('ig_token/:user_id')
+  getInstagramToken(@Query('user_id') user_id: string, @Res() res: Response) {
+    const token = instagramTokenStore.get(user_id);
+    if (!token) {
+      return res.status(404).json({ error: 'Token not found' });
+    }
+    return res.status(200).json({ access_token: token });
+  }
 }
