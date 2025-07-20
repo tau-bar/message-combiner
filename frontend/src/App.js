@@ -8,18 +8,7 @@ const BACKEND_DOMAIN = process.env.REACT_APP_BACKEND_DOMAIN;
 
 function Home() {
   const handleLogin = async () => {
-    try {
-      const response = await fetch(`${BACKEND_DOMAIN}/instagram_auth`);
-      if (!response.ok) throw new Error('Failed to get auth URL');
-      const data = await response.json();
-      if (data.url) {
-        window.location.href = data.url;
-      } else {
-        alert('No URL returned from backend');
-      }
-    } catch (err) {
-      alert('Error: ' + err.message);
-    }
+    window.location.href = `${BACKEND_DOMAIN}/instagram_auth`;
   };
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '100px' }}>
