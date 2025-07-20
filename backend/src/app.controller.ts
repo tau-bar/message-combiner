@@ -13,6 +13,9 @@ import { AppService } from './app.service';
 import { ConfigService } from '@nestjs/config';
 import axios from 'axios';
 
+// In-memory store for Instagram tokens (user_id -> access_token)
+const instagramTokenStore = new Map<string, string>();
+
 @Controller()
 export class AppController {
   constructor(
@@ -52,7 +55,7 @@ export class AppController {
     return res.redirect(authUrl);
   }
 
-  @Post('exchange-token')
+  @Post('ig_token_exchange')
   async exchangeToken(@Body('code') code: string, @Res() res: Response) {
     const client_id = this.configService.get<string>('INSTAGRAM_CLIENT_ID');
     const client_secret = this.configService.get<string>(
@@ -76,6 +79,8 @@ export class AppController {
         params,
       );
       const { access_token, user_id } = response.data;
+      // Store the access_token in memory by user_id
+      instagramTokenStore.set(user_id, access_token);
       return res.status(200).json({ access_token, user_id });
     } catch (error) {
       return res

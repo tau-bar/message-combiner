@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import './App.css';
 import MessagesPage from './MessagesPage';
+import InstagramAuthRedirect from './InstagramAuthRedirect';
 
 function Home() {
   const handleLogin = async () => {
@@ -33,6 +34,7 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/ig-auth-redirect" element={<InstagramAuthRedirect />} />
         <Route path="/messages" element={<MessagesPage />} />
       </Routes>
     </Router>
