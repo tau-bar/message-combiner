@@ -50,7 +50,7 @@ export class AppController {
       'INSTAGRAM_REDIRECT_URI',
     );
 
-    const authUrl = `https://api.instagram.com/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&scope=user_profile&response_type=code`;
+    const authUrl = `https://www.instagram.com/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&scope=instagram_business_basic,instagram_business_manage_messages&response_type=code`;
 
     return res.redirect(authUrl);
   }
