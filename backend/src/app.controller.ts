@@ -40,6 +40,18 @@ export class AppController {
     }
   }
 
+  @Get('instagram_auth')
+  redirectToInstagram(@Res() res: Response) {
+    const clientId = this.configService.get<string>('INSTAGRAM_CLIENT_ID');
+    const redirectUri = this.configService.get<string>(
+      'INSTAGRAM_REDIRECT_URI',
+    );
+
+    const authUrl = `https://api.instagram.com/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&scope=user_profile&response_type=code`;
+
+    return res.redirect(authUrl);
+  }
+
   @Post('exchange-token')
   async exchangeToken(@Body('code') code: string, @Res() res: Response) {
     const client_id = this.configService.get<string>('INSTAGRAM_CLIENT_ID');

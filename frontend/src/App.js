@@ -3,12 +3,20 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import './App.css';
 import MessagesPage from './MessagesPage';
 
-const INSTAGRAM_AUTH_URL =
-  `https://www.instagram.com/oauth/authorize?client_id=${process.env.REACT_APP_INSTAGRAM_CLIENT_ID}&redirect_uri=https://my.m.redirect.net/&response_type=code&scope=instagram_business_basic,instagram_business_manage_messages,instagram_business_manage_comments,instagram_business_content_publish`;
-
 function Home() {
-  const handleLogin = () => {
-    window.location.href = INSTAGRAM_AUTH_URL;
+  const handleLogin = async () => {
+    try {
+      const response = await fetch('https://message-combiner.onrender.com/instagram_auth');
+      if (!response.ok) throw new Error('Failed to get auth URL');
+      const data = await response.json();
+      if (data.url) {
+        window.location.href = data.url;
+      } else {
+        alert('No URL returned from backend');
+      }
+    } catch (err) {
+      alert('Error: ' + err.message);
+    }
   };
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '100px' }}>
