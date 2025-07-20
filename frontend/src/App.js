@@ -4,10 +4,12 @@ import './App.css';
 import MessagesPage from './MessagesPage';
 import InstagramAuthRedirect from './InstagramAuthRedirect';
 
+const BACKEND_DOMAIN = process.env.REACT_APP_BACKEND_DOMAIN;
+
 function Home() {
   const handleLogin = async () => {
     try {
-      const response = await fetch('https://message-combiner.onrender.com/instagram_auth');
+      const response = await fetch(`${BACKEND_DOMAIN}/instagram_auth`);
       if (!response.ok) throw new Error('Failed to get auth URL');
       const data = await response.json();
       if (data.url) {

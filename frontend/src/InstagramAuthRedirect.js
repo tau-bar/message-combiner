@@ -8,18 +8,26 @@ function InstagramAuthRedirect() {
     const params = new URLSearchParams(window.location.search);
     const code = params.get('code');
     const error = params.get('error');
+    const BACKEND_DOMAIN = process.env.REACT_APP_BACKEND_DOMAIN;
     if (code) {
       // Remove any trailing #_
       const cleanCode = code.replace(/#_$/, '');
-      fetch('https://message-combiner.onrender.com/ig_token_exchange', {
+      fetch(`${BACKEND_DOMAIN}/ig_token_exchange`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ code: cleanCode })
       })
-        .then(res => res.json())
+        .then(res => {
+          if (res.redirected) {
+            window.location.href = res.url;
+            return;
+          }
+          return res.json();
+        })
         .then(data => {
+          if (!data) return; // Already redirected
           setStatus('success');
-          setMessage('Authentication successful! Token exchanged.');
+          setMessage('Authentication successful!');
         })
         .catch(err => {
           setStatus('error');
